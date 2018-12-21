@@ -8,12 +8,14 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            newPortfolioName: "",
             portfolios: [],
             showPortfolio: false,
-            EurToUSD: 0.0,
+            EurToUSD: 1.0,
         };
         this.addNewPortfolio = this.addNewPortfolio.bind(this);
         this.removePortfolio = this.removePortfolio.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
@@ -28,15 +30,26 @@ class App extends Component {
 
     addNewPortfolio(name) {
         const portfolios = this.state.portfolios;
-        if (name.length > 0) {
-            portfolios.push(name);
+        if(portfolios.length < 10) {
+            if (name.length > 0) {
+                portfolios.push(name);
+                this.setState({
+                    portfolios: portfolios
+                });
+                this.handleClose()
+                localStorage.setItem(name, JSON.stringify([]))
+                this.setState({
+                    newPortfolioName: "",
+                });
+            }
+        }
+        else {
+            alert("You can only have 10 portfolios")
             this.setState({
-                portfolios: portfolios
+                newPortfolioName: "",
             });
             this.handleClose()
-            localStorage.setItem(name, JSON.stringify([]))
         }
-
     }
 
     removePortfolio(name) {
@@ -46,6 +59,10 @@ class App extends Component {
             portfolios: portfolios
         });
         localStorage.removeItem(name)
+    }
+
+    handleChange(evt) {
+        this.setState({ [evt.target.name]: evt.target.value });
     }
 
     handleClose = () => {
@@ -59,6 +76,8 @@ class App extends Component {
                 <AddPortfolioAlert
                     showPortfolio={this.state.showPortfolio}
                     addNewPortfolio={(name) => this.addNewPortfolio(name)}
+                    newPortfolioName={this.state.newPortfolioName}
+                    handleChange={this.handleChange}
                     handleClose={this.handleClose}
                 />
                 <div>
