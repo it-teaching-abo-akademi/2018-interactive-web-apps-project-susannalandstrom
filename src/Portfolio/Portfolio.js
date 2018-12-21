@@ -17,6 +17,7 @@ class Portfolio extends Component {
             show: false,
             showGraph: false,
             currencyEur: false,
+            stockValues: [],
         };
         this.changeCurrency = this.changeCurrency.bind(this);
         this.countNewValues = this.countNewValues.bind(this);
@@ -29,6 +30,8 @@ class Portfolio extends Component {
         this.removeSelectedStocks = this.removeSelectedStocks.bind(this);
         this.setRealTimeValueAndTotal = this.setRealTimeValueAndTotal.bind(this);
         this.updateRealTimeValueAndTotal = this.updateRealTimeValueAndTotal.bind(this);
+        this.drawGraph = this.drawGraph.bind(this);
+        this.getLast100StockValues = this.getLast100StockValues.bind(this);
     }
 
     componentDidMount() {
@@ -75,7 +78,6 @@ class Portfolio extends Component {
     }
 
     getStockValue(metaData) {
-        console.log(Object.keys(metaData["Time Series (5min)"])[0])
         const latestTime = Object.keys(metaData["Time Series (5min)"])[0];
         return (parseFloat(metaData["Time Series (5min)"][latestTime]["1. open"]) +
             parseFloat(metaData["Time Series (5min)"][latestTime]["2. high"]) +
@@ -89,7 +91,6 @@ class Portfolio extends Component {
         const stocks = this.state.stocks;
         const url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock.name + "&interval=5min&apikey=OHK5U5NEHY5FSE6A"
         axios.get(url).then(response => {
-            console.log(response)
             if (response.data["Note"]) {
                 alert("Price for given stock name not found or reached API-call-limit! Unit value is set to 10USD.");
                 stock.unitValue = 10;
@@ -210,6 +211,44 @@ class Portfolio extends Component {
         localStorage.setItem(this.props.name, JSON.stringify(stocks))
     }
 
+    drawGraph(){
+        this.setState({showGraph: true})
+        const stocks = this.state.stocks;
+        stocks.forEach(stock => {
+            const url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stock.name + "&apikey=OHK5U5NEHY5FSE6A"
+            axios.get(url).then(response => {
+                if (response.data["Note"]) {
+                    alert("Reached API-call-limit! Not showing " + stock.name);
+                } else {
+                    if(this.state.stockValues.map(stockValues => stockValues.name).includes(stock.name)) return;
+                    const datesAndValues = response.data["Time Series (Daily)"];
+                    const values = this.getLast100StockValues(datesAndValues);
+                    const stockValues = this.state.stockValues;
+
+                    stockValues.push({
+                        name: stock.name, y: values, x: Object.keys(datesAndValues)
+                    });
+                    this.setState({
+                        stockValues: stockValues
+                    });
+                    this.forceUpdate();
+                }
+            });
+        });
+
+    }
+
+    getLast100StockValues(datesAndValues) {
+        const dates = Object.keys(datesAndValues);
+        return dates.map(date => {
+            return (parseFloat(datesAndValues[date]["1. open"]) +
+                parseFloat(datesAndValues[date]["2. high"]) +
+                parseFloat(datesAndValues[date]["3. low"]) +
+                parseFloat(datesAndValues[date]["4. close"])
+            ) / 4.0
+        })
+    }
+
     render() {
         return (
             <div className="portfolio">
@@ -250,10 +289,11 @@ class Portfolio extends Component {
                         handleChange={this.handleChange}
                         handleClose={this.handleClose}
                     />
-                    <button className="row" onClick={() => this.setState({showGraph: true})}>Perf graph</button>
+                    <button className="row" onClick={() => this.drawGraph()}>Perf graph</button>
                     <AddPerfGraphAlert
                         showGraph={this.state.showGraph}
                         portfolioName={this.props.name}
+                        stockValues={this.state.stockValues}
                         handleChange={this.handleChange}
                         handleClose={this.handleClose}
                     />
