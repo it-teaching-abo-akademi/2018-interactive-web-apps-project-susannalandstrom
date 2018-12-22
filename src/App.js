@@ -18,7 +18,9 @@ class App extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
-
+    
+    /*fetch the exchange rate from Eur to USD from alphavantage and set it to EurToUSD state
+    fetch portfolionmes from local storage and set them to portfolios state*/
     componentDidMount() {
         const url = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=OHK5U5NEHY5FSE6A";
         axios.get(url).then (response => this.setState({EurToUSD: response.data}))
@@ -28,6 +30,7 @@ class App extends Component {
         })
     }
 
+    /*adds new portfolio to portfolios state if there are less than 10 portfolios*/
     addNewPortfolio(name) {
         const portfolios = this.state.portfolios;
         if(portfolios.length < 10) {
@@ -37,7 +40,8 @@ class App extends Component {
                     portfolios: portfolios
                 });
                 this.handleClose()
-                localStorage.setItem(name, JSON.stringify([]))
+                localStorage.setItem(name, JSON.stringify([])) /*add the new portfolio to local storage*/
+                /*empty the text field in the AddPortfolioAlert window*/
                 this.setState({
                     newPortfolioName: "",
                 });
@@ -52,6 +56,7 @@ class App extends Component {
         }
     }
 
+    /*removes the portfolio from portfolios state and from local storage*/
     removePortfolio(name) {
         const portfolios = this.state.portfolios;
         portfolios.splice(portfolios.indexOf(name), 1)
@@ -65,6 +70,7 @@ class App extends Component {
         this.setState({ [evt.target.name]: evt.target.value });
     }
 
+    /*close the AddPortfolioAlert window*/
     handleClose = () => {
         this.setState({showPortfolio: false});
     };
