@@ -68,7 +68,7 @@ class Portfolio extends Component {
         stocks.forEach(stock => {
             stock.unitValue = (stock.unitValue * multiplier).toFixed(2);
             stock.totalValue = (stock.unitValue * stock.quantity).toFixed(2);
-        })
+        });
         this.forceUpdate();
     }
 
