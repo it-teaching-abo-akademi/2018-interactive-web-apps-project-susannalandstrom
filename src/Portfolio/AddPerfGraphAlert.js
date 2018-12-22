@@ -41,7 +41,7 @@ class AddPerfGraphAlert extends Component {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.handleClose} color="primary">
-                        Cancel
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>

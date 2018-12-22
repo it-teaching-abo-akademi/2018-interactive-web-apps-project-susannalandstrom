@@ -136,7 +136,7 @@ class Portfolio extends Component {
         const stocks = this.state.stocks;
         if (stocks.length < 50) {
             if (!stocks.map(stock => stock.name).includes(stockSymbol.toUpperCase())) {
-                if (0 < stockSymbol.length && stockSymbol.length < 5 && stockQuantity > 0) {
+                if (0 < stockSymbol.length && stockSymbol.length < 6 && stockQuantity > 0) {
                     const stock = {name: stockSymbol.toUpperCase(), quantity: stockQuantity};
                     this.setRealTimeValueAndTotal(stock);
                     this.handleClose()
@@ -149,8 +149,8 @@ class Portfolio extends Component {
                 else if (stockQuantity < 1) {
                     alert("Number of shares must be bigger than 0")
                 }
-                else if (stockSymbol.length < 0 || stockSymbol.length > 4) {
-                    alert("Stock symbol can have 3 to 4 letters")
+                else if (stockSymbol.length < 0 || stockSymbol.length > 5) {
+                    alert("Stock symbol can have 1 to 5 letters")
                 }
                 else {
                     this.handleClose()
