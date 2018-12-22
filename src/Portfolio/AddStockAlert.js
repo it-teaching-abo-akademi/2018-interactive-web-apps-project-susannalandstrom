@@ -9,8 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 class AddStockAlert extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
     };
 
     render() {
