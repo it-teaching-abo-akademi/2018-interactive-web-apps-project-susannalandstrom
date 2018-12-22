@@ -33,7 +33,8 @@ class Portfolio extends Component {
         this.drawGraph = this.drawGraph.bind(this);
         this.getLast100StockValues = this.getLast100StockValues.bind(this);
     }
-
+    
+    /*get stocks from local storage and update latest prices when component mounts*/
     componentDidMount() {
         this.setState({
             stocks: JSON.parse(localStorage.getItem(this.props.name))
@@ -45,6 +46,7 @@ class Portfolio extends Component {
         })
     }
 
+    /*change currency between euros and USD*/
     changeCurrency(currency) {
         const currencyEur = this.state.currencyEur;
         const selectedCurrency = currency;
@@ -59,6 +61,7 @@ class Portfolio extends Component {
         }
     }
 
+    /*count new values for stocks based on the chosen currency*/
     countNewValues() {
         const stocks = this.state.stocks;
         const multiplier = this.state.currencyEur ? 1.0 / this.getExchangeRate() : this.getExchangeRate();
@@ -87,13 +90,14 @@ class Portfolio extends Component {
 
     }
 
+    /*set unitValue and count totalValue based on fetched data from alphavantage*/
     setRealTimeValueAndTotal(stock) {
         const stocks = this.state.stocks;
         const url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock.name + "&interval=5min&apikey=OHK5U5NEHY5FSE6A"
         axios.get(url).then(response => {
             if (response.data["Note"]) {
-                alert("Price for given stock name not found or reached API-call-limit! Unit value is set to 10USD.");
-                stock.unitValue = 10;
+                alert("Reached API-call-limit or unable to find price for given stock name! Unit value is set to 5 USD.");
+                stock.unitValue = 5;
                 stock.totalValue = (stock.unitValue * stock.quantity).toFixed(2);
             } else {
                 stock.unitValue = this.getStockValue(response.data).toFixed(2);
@@ -108,6 +112,7 @@ class Portfolio extends Component {
 
     }
 
+    /*update the latest value for unitValue and totalValue*/
     updateRealTimeValueAndTotal(stock) {
         const stocks = this.state.stocks;
         const url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + stock.name + "&interval=5min&apikey=OHK5U5NEHY5FSE6A"
@@ -135,6 +140,7 @@ class Portfolio extends Component {
                     const stock = {name: stockSymbol.toUpperCase(), quantity: stockQuantity};
                     this.setRealTimeValueAndTotal(stock);
                     this.handleClose()
+                    /*empty the text fields from AddStockAlert*/
                     this.setState({
                         newStockSymbol: "",
                         newStockQuantity: 0,
@@ -177,6 +183,7 @@ class Portfolio extends Component {
         this.setState({showGraph: false})
     };
 
+    /*set checked stocks to selectedStocks state*/
     checkboxClick(stockName) {
         const selectedStock = this.state.selectedStock;
         if (selectedStock.includes(stockName)) {
@@ -193,6 +200,7 @@ class Portfolio extends Component {
         }
     }
 
+    /*count total value of all stocks in a portfolio*/
     countTotalValue() {
         const stocks = this.state.stocks;
         let sum = 0.0;
@@ -200,6 +208,7 @@ class Portfolio extends Component {
         return sum.toFixed(2)
     }
 
+    /*remove stocks set to selectedStocks state from the portfolio*/
     removeSelectedStocks() {
         let stocks = this.state.stocks;
         this.state.selectedStock.forEach(selectedStock => {
