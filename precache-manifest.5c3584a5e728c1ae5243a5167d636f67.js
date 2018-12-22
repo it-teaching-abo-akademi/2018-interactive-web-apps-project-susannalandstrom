@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/2018-interactive-web-apps-project-susannalandstrom/static/css/main.01571636.chunk.css"
   },
   {
-    "revision": "7f83568c477e430e4d30d15741a88610",
+    "revision": "c70c3e2ed196d195143cd5d215ecfe9a",
     "url": "/2018-interactive-web-apps-project-susannalandstrom/index.html"
   }
 ];
