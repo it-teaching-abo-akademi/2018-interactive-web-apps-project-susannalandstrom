@@ -3,17 +3,10 @@ import React, {Component} from 'react';
 class PortfolioTable extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        };
-
     }
-
-
 
     render() {
         const stocks = this.props.stockTable;
-
         return (
             <div className="tableOfStocks">
                 <table>
