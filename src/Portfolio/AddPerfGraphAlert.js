@@ -9,13 +9,12 @@ import Plot from 'react-plotly.js';
 class AddPerfGraphAlert extends Component {
     constructor(props) {
         super(props);
-
     }
-
 
     render() {
         const stockValues = this.props.stockValues;
         const colorArray = ['red', 'green', 'blue', 'black', 'yellow', 'magenta', 'cyan', 'purple', 'brown', 'orange'];
+        /*create data (plot) for all stocks in the portfolio*/
         const data = stockValues.map((stockValue,index) => {
             return {
                 x: stockValue.x,
