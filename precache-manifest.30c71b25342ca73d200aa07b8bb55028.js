@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/2018-interactive-web-apps-project-susannalandstrom/static/js/runtime~main.087accda.js"
   },
   {
-    "revision": "ee2f194091fbd75aa19e",
-    "url": "/2018-interactive-web-apps-project-susannalandstrom/static/js/main.ee2f1940.chunk.js"
+    "revision": "bb41e9664f03d440832b",
+    "url": "/2018-interactive-web-apps-project-susannalandstrom/static/js/main.bb41e966.chunk.js"
   },
   {
     "revision": "e05e3eaac6c2eda2b3cc",
     "url": "/2018-interactive-web-apps-project-susannalandstrom/static/js/1.e05e3eaa.chunk.js"
   },
   {
-    "revision": "ee2f194091fbd75aa19e",
+    "revision": "bb41e9664f03d440832b",
     "url": "/2018-interactive-web-apps-project-susannalandstrom/static/css/main.01571636.chunk.css"
   },
   {
-    "revision": "a53487a2a13ea34bde2a27836a513f68",
+    "revision": "7f83568c477e430e4d30d15741a88610",
     "url": "/2018-interactive-web-apps-project-susannalandstrom/index.html"
   }
 ];

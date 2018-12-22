@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/2018-interactive-web-apps-project-susannalandstrom/precache-manifest.8dcb45e4ba16a5d7e0ec531c16e96695.js"
+  "/2018-interactive-web-apps-project-susannalandstrom/precache-manifest.30c71b25342ca73d200aa07b8bb55028.js"
 );
 
 workbox.clientsClaim();
